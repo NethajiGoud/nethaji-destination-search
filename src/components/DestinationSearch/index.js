@@ -6,15 +6,37 @@ import {Component} from 'react'
 import DestinationItem from '../DestinationItem'
 
 class DestinationSearch extends Component {
+  state = {
+    searchInput: '',
+  }
+
+  onChangeInputElement = event => {
+    this.setState({
+      searchInput: event.target.value,
+    })
+  }
+
   render() {
     const {destinationsList} = this.props
+    const {searchInput} = this.state
+    const searchResults = destinationsList.filter(eachDestination =>
+      eachDestination.name.toLowerCase().includes(searchInput.toLowerCase()),
+    )
+
     return (
       <div className="background">
         <h1>Destination Search </h1>
-        <input type="search" />
+        <div>
+          <input
+            type="search"
+            placeholder="search"
+            onChange={this.onChangeInputElement}
+            value={searchInput}
+          />
+        </div>
 
         <ul className="destinations-list">
-          {destinationsList.map(eachDestination => (
+          {searchResults.map(eachDestination => (
             <DestinationItem
               key={eachDestination.id}
               destinationDetails={eachDestination}
